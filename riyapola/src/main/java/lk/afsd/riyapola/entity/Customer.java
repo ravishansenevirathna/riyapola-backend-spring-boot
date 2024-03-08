@@ -1,6 +1,7 @@
 package lk.afsd.riyapola.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,6 +15,7 @@ import java.util.List;
  * Created time : 4:31 PM
  */
 @NoArgsConstructor
+@AllArgsConstructor
 @Data
 @Entity
 public class Customer {

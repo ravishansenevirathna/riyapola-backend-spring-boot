@@ -10,18 +10,19 @@ import java.time.LocalDate;
 /**
  * Hi 👋, I'm ravishansenevirathna
  * Project : riyapola
- * Created date : 3/4/2024
- * Created time : 4:20 PM
+ * Created date : 3/7/2024
+ * Created time : 10:56 AM
  */
 @AllArgsConstructor
 @Data
 @NoArgsConstructor
-public class CarDto {
+public class CarDetailsGetDto {
     private Integer carId;
     private String brand;
     private String model;
     private int year;
     private String engineCap;
     private String fuelType;
-    private MultipartFile imageName;
+    private String imageName;
 }
+

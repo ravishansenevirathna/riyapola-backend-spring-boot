@@ -2,6 +2,7 @@ package lk.afsd.riyapola.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * Hi 👋, I'm ravishansenevirathna
@@ -11,6 +12,7 @@ import lombok.Data;
  */
 @AllArgsConstructor
 @Data
+@NoArgsConstructor
 public class CustomerDto {
     private Integer cusid;
     private String name;
