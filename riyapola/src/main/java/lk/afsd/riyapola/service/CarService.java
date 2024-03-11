@@ -48,8 +48,6 @@ public class CarService {
     }
 
 
-
-
     public List<CarDetailsGetDto> getAllCars(){
         List<Car> all = carRepo.findAll();
         List<CarDetailsGetDto> list = new ArrayList<>();

@@ -10,4 +10,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * Created time : 4:32 PM
  */
 public interface CustomerRepo extends JpaRepository<Customer,Integer> {
+    Customer findCustomersByEmailAndPassword(String email,String password);
 }

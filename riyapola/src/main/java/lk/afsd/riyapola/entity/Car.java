@@ -31,16 +31,14 @@ public class Car {
     private String fuelType;
     private String imageName;
 
-    @ManyToMany(mappedBy = "cars")
-    private List<Customer> customers;
 
-    public Car(Integer carId, String brand, String model, int year, String engineCap, String fuelType, String imageName) {
-        this.carId=carId;
-        this.brand=brand;
-        this.model=model;
-        this.year=year;
-        this.engineCap=engineCap;
-        this.fuelType=fuelType;
-        this.imageName=imageName;
-    }
+//    public Car(Integer carId, String brand, String model, int year, String engineCap, String fuelType, String imageName) {
+//        this.carId=carId;
+//        this.brand=brand;
+//        this.model=model;
+//        this.year=year;
+//        this.engineCap=engineCap;
+//        this.fuelType=fuelType;
+//        this.imageName=imageName;
+//    }
 }
