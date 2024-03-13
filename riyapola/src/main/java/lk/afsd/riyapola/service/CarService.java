@@ -7,6 +7,7 @@ import lk.afsd.riyapola.repo.CarRepo;
 import lk.afsd.riyapola.util.ModelMapperConfig;
 import org.springframework.stereotype.Service;
 
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -33,8 +34,8 @@ public class CarService {
 
     public CarDetailsGetDto saveCar(CarDto carDto) throws IOException, URISyntaxException {
         String projectPath = new File(this.getClass().getProtectionDomain().getCodeSource().getLocation().toURI()).getParentFile().getParentFile().getAbsolutePath();
-        File uploadDir = new File(projectPath + "/uploads");
-//        meke hari nam project path eka denna one /src/main/resources/static menna me path erke
+        File uploadDir = new File(projectPath + "/src/main/resources/static/uploads");
+//        meke hari nam project path eka denna one /src/main/resources/static menna me path eke
         uploadDir.mkdir();
 
         carDto.getImageName().transferTo(new File(uploadDir.getAbsolutePath() + "/" + carDto.getImageName().getOriginalFilename()));
@@ -57,6 +58,22 @@ public class CarService {
         }
         return list;
     }
+
+//    public List<CarDto> getAllCarsM(){
+//        List<Car> all = carRepo.findAll();
+//        List<Image> all2=uploadDir
+//        List<CarDto> list = new ArrayList<>();
+//        for (Car car : all) {
+//            CarDto carDto = entityToDto2(car);
+//            list.add(carDto);
+//        }
+//        return list;
+//    }
+
+
+
+
+
 
 
     public String deleteCar(Integer id){
@@ -118,6 +135,10 @@ public class CarService {
 
     private CarDetailsGetDto entityToDto(Car car){
         return modelMapperConfig.modelMapper().map(car,CarDetailsGetDto.class);
+    }
+
+    private CarDto entityToDto2(Car car){
+        return modelMapperConfig.modelMapper().map(car,CarDto.class);
     }
 
 }

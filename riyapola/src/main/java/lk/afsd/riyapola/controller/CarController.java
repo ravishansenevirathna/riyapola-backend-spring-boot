@@ -55,22 +55,38 @@ public class CarController {
     public ResponseEntity<Object> getAllCars(){
         List<CarDetailsGetDto> carDetailsGetDto = carService.getAllCars();
         return new ResponseEntity<>(carDetailsGetDto, HttpStatus.OK);
-
     }
+
+//    @GetMapping("/getAllCarsM")
+//    public ResponseEntity<Object> getAllCarsM(){
+//        List<CarDto> carDto = carService.getAllCarsM();
+//        return new ResponseEntity<>(carDto, HttpStatus.OK);
+//    }
+
+
+
+
 
 
     @DeleteMapping("/deleteCar/{carId}")
-    public ResponseEntity<String> deleteCar(@PathVariable Integer carId) throws IOException, URISyntaxException {
+    public ResponseEntity<String> deleteCar(@RequestHeader(name = "Authorization") String authorizationHeader,@PathVariable Integer carId) throws IOException, URISyntaxException {
+        if (this.jwtTokenGenerator.validateJwtToken(authorizationHeader)) {
         String output=carService.deleteCar(carId);
-        return new ResponseEntity<>(output,HttpStatus.OK);
+        return new ResponseEntity<>(output,HttpStatus.OK);}
+        else {
+            return new ResponseEntity<>("invalid Token", HttpStatus.FORBIDDEN);
+        }
 
     }
 
     @PutMapping("/updateCar/{carId}")
-    public ResponseEntity<Car> updateCar(@PathVariable Integer carId, @ModelAttribute CarDetailsGetDto carDetailsGetDto){
+    public ResponseEntity<Car> updateCar(@RequestHeader(name = "Authorization") String authorizationHeader,@PathVariable Integer carId, @ModelAttribute CarDetailsGetDto carDetailsGetDto){
+        if (this.jwtTokenGenerator.validateJwtToken(authorizationHeader)) {
         Car car=carService.updateCar(carId,carDetailsGetDto);
-        return new ResponseEntity<>(car,HttpStatus.OK);
-
+        return new ResponseEntity<>(car,HttpStatus.OK);}
+        else {
+            return null;
+        }
     }
 
 }

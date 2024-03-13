@@ -43,7 +43,6 @@ public class CustomerController {
         return new ResponseEntity<>(customerDto1, HttpStatus.CREATED);
     }
 
-
     @PostMapping("/login")
     public Map<String, String> loginCustomer(@RequestBody Customer customer) {
         Map<String, String> response = new HashMap<>();
