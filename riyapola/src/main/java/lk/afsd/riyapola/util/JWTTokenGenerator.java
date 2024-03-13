@@ -4,6 +4,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lk.afsd.riyapola.entity.Admin;
 import lk.afsd.riyapola.entity.Customer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -19,7 +20,7 @@ import java.util.Date;
  * Created time : 12:54 PM
  */
 @Component
-public class JWTTokenGenerator{
+public class JWTTokenGenerator {
 
     @Value("${acpt.app.jwtSecret}")
     private String jwtSecret;
@@ -37,7 +38,15 @@ public class JWTTokenGenerator{
                 .compact();
     }
 
-
+    public String generateJwtTokenForAdmin(Admin admin) {
+        return Jwts.builder()
+                .setId(String.valueOf(admin.getAdminId()))
+                .setSubject((admin.getUserName()))
+                .setIssuedAt(new Date())
+                .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
+                .signWith(key(), SignatureAlgorithm.HS256)
+                .compact();
+    }
 
     private Key key() {
         return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
@@ -54,7 +63,6 @@ public class JWTTokenGenerator{
 
         return false;
     }
-
 
 
 }

@@ -10,4 +10,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * Created time : 4:18 PM
  */
 public interface AdminRepo extends JpaRepository<Admin, Integer> {
+    Admin findAdminByUserNameAndPassword(String userName,String password);
 }

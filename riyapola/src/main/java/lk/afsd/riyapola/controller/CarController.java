@@ -4,6 +4,7 @@ import lk.afsd.riyapola.dto.CarDetailsGetDto;
 import lk.afsd.riyapola.dto.CarDto;
 import lk.afsd.riyapola.entity.Car;
 import lk.afsd.riyapola.service.CarService;
+import lk.afsd.riyapola.util.JWTTokenGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,10 +26,12 @@ import java.util.List;
 public class CarController {
 
     public final CarService carService;
+    private final JWTTokenGenerator jwtTokenGenerator;
 
     @Autowired
-    public CarController(CarService carService) {
+    public CarController(CarService carService, JWTTokenGenerator jwtTokenGenerator) {
         this.carService = carService;
+        this.jwtTokenGenerator = jwtTokenGenerator;
     }
 
 //    @PostMapping("addCar")
@@ -37,13 +40,18 @@ public class CarController {
 //        return new ResponseEntity<>(car, HttpStatus.CREATED);
 //    }
 
-    @PostMapping("/addnewcar")
-    public ResponseEntity<Object> saveCar(@ModelAttribute CarDto carDto) throws IOException, URISyntaxException {
-        CarDetailsGetDto carDetailsGetDto=carService.saveCar(carDto);
-        return new ResponseEntity<>(carDetailsGetDto, HttpStatus.CREATED);
+    @PostMapping("/addNewCar")
+    public ResponseEntity<Object> saveCar(@RequestHeader(name = "Authorization") String authorizationHeader,@ModelAttribute CarDto carDto) throws IOException, URISyntaxException {
+        if (this.jwtTokenGenerator.validateJwtToken(authorizationHeader)) {
+            CarDetailsGetDto carDetailsGetDto = carService.saveCar(carDto);
+            return new ResponseEntity<>(carDetailsGetDto, HttpStatus.CREATED);
+        }
+        else {
+            return new ResponseEntity<>("invalid Token", HttpStatus.FORBIDDEN);
+        }
     }
 
-    @GetMapping("/getallcars")
+    @GetMapping("/getAllCars")
     public ResponseEntity<Object> getAllCars(){
         List<CarDetailsGetDto> carDetailsGetDto = carService.getAllCars();
         return new ResponseEntity<>(carDetailsGetDto, HttpStatus.OK);
@@ -51,14 +59,14 @@ public class CarController {
     }
 
 
-    @DeleteMapping("/deletecar/{carId}")
+    @DeleteMapping("/deleteCar/{carId}")
     public ResponseEntity<String> deleteCar(@PathVariable Integer carId) throws IOException, URISyntaxException {
         String output=carService.deleteCar(carId);
         return new ResponseEntity<>(output,HttpStatus.OK);
 
     }
 
-    @PutMapping("/updatecar/{carId}")
+    @PutMapping("/updateCar/{carId}")
     public ResponseEntity<Car> updateCar(@PathVariable Integer carId, @ModelAttribute CarDetailsGetDto carDetailsGetDto){
         Car car=carService.updateCar(carId,carDetailsGetDto);
         return new ResponseEntity<>(car,HttpStatus.OK);

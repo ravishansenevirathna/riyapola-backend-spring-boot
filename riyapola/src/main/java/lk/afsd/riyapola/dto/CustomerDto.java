@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @NoArgsConstructor
-public class CustomerDto {
+public class CustomerDto{
     private Integer cusId;
     private String name;
     private String telephoneNum;
