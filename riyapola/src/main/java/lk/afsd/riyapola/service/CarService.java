@@ -49,31 +49,15 @@ public class CarService {
     }
 
 
-    public List<CarDetailsGetDto> getAllCars(){
+    public List<CarDto> getAllCars(){
         List<Car> all = carRepo.findAll();
-        List<CarDetailsGetDto> list = new ArrayList<>();
+        List<CarDto> list = new ArrayList<>();
         for (Car car : all) {
-            CarDetailsGetDto carDetailsGetDto = entityToDto(car);
-            list.add(carDetailsGetDto);
+            CarDto carDto = entityToDto2(car);
+            list.add(carDto);
         }
         return list;
     }
-
-//    public List<CarDto> getAllCarsM(){
-//        List<Car> all = carRepo.findAll();
-//        List<Image> all2=uploadDir
-//        List<CarDto> list = new ArrayList<>();
-//        for (Car car : all) {
-//            CarDto carDto = entityToDto2(car);
-//            list.add(carDto);
-//        }
-//        return list;
-//    }
-
-
-
-
-
 
 
     public String deleteCar(Integer id){
@@ -140,5 +124,9 @@ public class CarService {
     private CarDto entityToDto2(Car car){
         return modelMapperConfig.modelMapper().map(car,CarDto.class);
     }
+
+
+
+
 
 }

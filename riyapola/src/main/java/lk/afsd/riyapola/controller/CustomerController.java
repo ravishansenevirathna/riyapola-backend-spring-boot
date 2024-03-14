@@ -7,10 +7,7 @@ import lk.afsd.riyapola.service.CustomerService;
 import lk.afsd.riyapola.util.JWTTokenGenerator;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,6 +18,7 @@ import java.util.Map;
  * Created date : 3/4/2024
  * Created time : 4:31 PM
  */
+@CrossOrigin
 @RestController
 @RequestMapping("/customer")
 public class CustomerController {
