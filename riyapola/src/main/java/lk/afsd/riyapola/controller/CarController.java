@@ -51,10 +51,16 @@ public class CarController {
         }
     }
 
+//    @GetMapping("/getAllCars")
+//    public ResponseEntity<Object> getAllCars(){
+//        List<CarDto> carDto = carService.getAllCars();
+//        return new ResponseEntity<>(carDto, HttpStatus.OK);
+//    }
+
     @GetMapping("/getAllCars")
     public ResponseEntity<Object> getAllCars(){
-        List<CarDto> carDto = carService.getAllCars();
-        return new ResponseEntity<>(carDto, HttpStatus.OK);
+        List<CarDetailsGetDto> GetDto = carService.getAllCars();
+        return new ResponseEntity<>(GetDto, HttpStatus.OK);
     }
 
 

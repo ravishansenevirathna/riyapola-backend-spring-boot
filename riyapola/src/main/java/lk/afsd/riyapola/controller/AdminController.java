@@ -7,6 +7,7 @@ import lk.afsd.riyapola.service.AdminService;
 import lk.afsd.riyapola.util.JWTTokenGenerator;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -34,22 +35,42 @@ public class AdminController {
 
     @PostMapping("/register")
     public ResponseEntity<Object> registerAdmin(@RequestBody AdminDto adminDto) {
+        BCryptPasswordEncoder bCryptPasswordEncoder=new BCryptPasswordEncoder();
+        String encryptPwd = bCryptPasswordEncoder.encode(adminDto.getPassword());
+        adminDto.setPassword(encryptPwd);
+
         AdminDto save = adminService.registerAdmin(adminDto);
         return new ResponseEntity<>(save, HttpStatus.CREATED);
     }
 
     @PostMapping("/login")
     public Map<String, String> loginAdmin(@RequestBody AdminDto adminDto) {
-        Map<String, String> response = new HashMap<>();
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
-        Admin adminByUserNameAndPassword = adminRepo.findAdminByUserNameAndPassword(adminDto.getUserName(), adminDto.getPassword());
+            Map<String, String> response = new HashMap<>();
+            String adminByUserNameGetPw = adminRepo.findAdminByCredentials(adminDto.getUserName());
+//        String use = adminByUserNameGetPw.getPassword();
 
-        if (adminByUserNameAndPassword != null) {
-            String token = this.jwtTokenGenerator.generateJwtTokenForAdmin(adminByUserNameAndPassword);
-            response.put("token", token);
-        } else {
-            response.put("massage", "wrong Credentials");
-        }
-        return response;
+
+//        if(bCryptPasswordEncoder.matches(adminDto.getPassword(),adminByUserNameGetPw)){
+//            System.out.println("hi");
+//        }
+
+//        Admin adminByUserNameAndPassword = adminRepo.findAdminByUserNameAndPassword(adminDto.getUserName(), adminDto.getPassword());
+
+            Admin adminByUserName = adminRepo.findAdminByUserName(adminDto.getUserName());
+
+
+            if (adminByUserName != null && bCryptPasswordEncoder.matches(adminDto.getPassword(), adminByUserNameGetPw)) {
+                String token = this.jwtTokenGenerator.generateJwtTokenForAdmin(adminByUserName);
+                response.put("token", token);
+            } else {
+                response.put("massage", "wrong Credentials");
+            }
+            return response;
+
     }
+
+
+
 }

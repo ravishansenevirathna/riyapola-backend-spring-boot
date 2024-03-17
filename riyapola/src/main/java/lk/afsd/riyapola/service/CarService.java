@@ -49,12 +49,22 @@ public class CarService {
     }
 
 
-    public List<CarDto> getAllCars(){
+//    public List<CarDto> getAllCars(){
+//        List<Car> all = carRepo.findAll();
+//        List<CarDto> list = new ArrayList<>();
+//        for (Car car : all) {
+//            CarDto carDto = entityToDto2(car);
+//            list.add(carDto);
+//        }
+//        return list;
+//    }
+
+    public List<CarDetailsGetDto> getAllCars(){
         List<Car> all = carRepo.findAll();
-        List<CarDto> list = new ArrayList<>();
+        List<CarDetailsGetDto> list = new ArrayList<>();
         for (Car car : all) {
-            CarDto carDto = entityToDto2(car);
-            list.add(carDto);
+            CarDetailsGetDto carDetailsGetDto = entityToDto2(car);
+            list.add(carDetailsGetDto);
         }
         return list;
     }
@@ -121,8 +131,12 @@ public class CarService {
         return modelMapperConfig.modelMapper().map(car,CarDetailsGetDto.class);
     }
 
-    private CarDto entityToDto2(Car car){
-        return modelMapperConfig.modelMapper().map(car,CarDto.class);
+//    private CarDto entityToDto2(Car car){
+//        return modelMapperConfig.modelMapper().map(car,CarDto.class);
+//    }
+
+    private CarDetailsGetDto entityToDto2(Car car){
+        return modelMapperConfig.modelMapper().map(car,CarDetailsGetDto.class);
     }
 
 

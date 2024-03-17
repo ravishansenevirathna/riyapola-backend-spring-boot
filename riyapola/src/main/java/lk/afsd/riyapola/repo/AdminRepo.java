@@ -2,6 +2,7 @@ package lk.afsd.riyapola.repo;
 
 import lk.afsd.riyapola.entity.Admin;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 /**
  * Hi 👋, I'm ravishansenevirathna
@@ -10,5 +11,17 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * Created time : 4:18 PM
  */
 public interface AdminRepo extends JpaRepository<Admin, Integer> {
+
+//    @Query(nativeQuery = true, value = "SELECT password FROM admin WHERE user_name=admin")
+
+    @Query(nativeQuery = true, value = "SELECT password FROM admin WHERE user_name = :userName")
+    String findAdminByCredentials(String userName);
+
+
     Admin findAdminByUserNameAndPassword(String userName,String password);
+    Admin findAdminByUserName(String userName);
+
+
+
+
 }
