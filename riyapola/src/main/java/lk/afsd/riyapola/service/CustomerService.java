@@ -6,6 +6,9 @@ import lk.afsd.riyapola.repo.CustomerRepo;
 import lk.afsd.riyapola.util.ModelMapperConfig;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Hi 👋, I'm ravishansenevirathna
  * Project : riyapola
@@ -32,6 +35,37 @@ public class CustomerService {
         return entityToDto(save);
     }
 
+    public List<CustomerDto> getAllCustomer(){
+        List<Customer> all = customerRepo.findAll();
+       List<CustomerDto> list = new ArrayList<>();
+       for (Customer customer1:all){
+           CustomerDto customerDto = entityToDto(customer1);
+           list.add(customerDto);
+       }
+       return list;
+
+    }
+
+
+    public String deleteCustomer(Integer cusId){
+        if(customerRepo.existsById(cusId)){
+            customerRepo.deleteById(cusId);
+            return "Customer Deleted";
+        }
+        return "No Customer Found";
+
+
+    }
+
+    public CustomerDto updateCustomer(Integer cusId, CustomerDto customerDto){
+        if(customerRepo.existsById(cusId)){
+            customerDto.setCusId(cusId);
+             Customer customer = dtoToEntity(customerDto);
+             customerRepo.save(customer);
+        }
+        return null;
+    }
+
 
 
 
@@ -42,5 +76,6 @@ public class CustomerService {
     private CustomerDto entityToDto(Customer customer){
         return modelMapperConfig.modelMapper().map(customer,CustomerDto.class);
     }
+
 
 }

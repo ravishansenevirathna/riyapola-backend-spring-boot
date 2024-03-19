@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -55,6 +56,40 @@ public class CustomerController {
         return response;
     }
 
+    @GetMapping("/getAllCustomer")
+    public ResponseEntity<Object> getAllCustomer(){
+        List<CustomerDto> allCustomer=customerService.getAllCustomer();
+        return new ResponseEntity<>(allCustomer,HttpStatus.OK);
+    }
 
+
+    @DeleteMapping("/{cusId}")
+    public ResponseEntity<String> deleteCustomer(@RequestHeader(name = "Authorization") String authorizationHeader,@PathVariable Integer cusId){
+
+        if (this.jwtTokenGenerator.validateJwtToken(authorizationHeader)) {
+        String output=customerService.deleteCustomer(cusId);
+        return new ResponseEntity<>(output,HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity<>("invalid Token", HttpStatus.FORBIDDEN);
+        }
+
+    }
+
+//    Controller eken service ekt entity ekak pass karanna baha
+    
+//    put meka aye karanna update wechcha cus ge details pennanna puluwaqn wena widihata
+
+    @PutMapping("updateCustomer/{cusId}")
+    public ResponseEntity<Object> updateCustomer(@RequestHeader(name = "Authorization") String authorizationHeader,@PathVariable Integer cusId, @RequestBody CustomerDto customerDto){
+        if (this.jwtTokenGenerator.validateJwtToken(authorizationHeader)) {
+
+        CustomerDto customerDto1=customerService.updateCustomer(cusId,customerDto);
+        return new ResponseEntity("done",HttpStatus.OK);
+
+        } else {
+            return new ResponseEntity<>("invalid Token", HttpStatus.FORBIDDEN);
+        }
+    }
+    
 
 }
