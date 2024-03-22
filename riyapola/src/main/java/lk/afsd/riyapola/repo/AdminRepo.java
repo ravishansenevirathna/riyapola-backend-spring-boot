@@ -12,16 +12,10 @@ import org.springframework.data.jpa.repository.Query;
  */
 public interface AdminRepo extends JpaRepository<Admin, Integer> {
 
-//    @Query(nativeQuery = true, value = "SELECT password FROM admin WHERE user_name=admin")
 
     @Query(nativeQuery = true, value = "SELECT password FROM admin WHERE user_name = :userName")
     String findAdminByCredentials(String userName);
 
-
-
-
-
-    Admin findAdminByUserNameAndPassword(String userName,String password);
     Admin findAdminByUserName(String userName);
 
 

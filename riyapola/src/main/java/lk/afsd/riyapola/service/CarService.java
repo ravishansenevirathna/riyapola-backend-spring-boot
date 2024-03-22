@@ -35,7 +35,7 @@ public class CarService {
     public CarDetailsGetDto saveCar(CarDto carDto) throws IOException, URISyntaxException {
         String projectPath = new File(this.getClass().getProtectionDomain().getCodeSource().getLocation().toURI()).getParentFile().getParentFile().getAbsolutePath();
         File uploadDir = new File(projectPath + "/src/main/resources/static/uploads");
-//        meke hari nam project path eka denna one /src/main/resources/static menna me path eke
+
         uploadDir.mkdir();
 
         carDto.getImageName().transferTo(new File(uploadDir.getAbsolutePath() + "/" + carDto.getImageName().getOriginalFilename()));
@@ -49,15 +49,7 @@ public class CarService {
     }
 
 
-//    public List<CarDto> getAllCars(){
-//        List<Car> all = carRepo.findAll();
-//        List<CarDto> list = new ArrayList<>();
-//        for (Car car : all) {
-//            CarDto carDto = entityToDto2(car);
-//            list.add(carDto);
-//        }
-//        return list;
-//    }
+
 
     public List<CarDetailsGetDto> getAllCars(){
         List<Car> all = carRepo.findAll();
@@ -82,43 +74,26 @@ public class CarService {
 
 
 
-//    public String deleteCar(Integer id) throws IOException, URISyntaxException {
-//        if (carRepo.existsById(id)) {
-//            Car car = carRepo.findById(id).get();
-//
-//            // Retrieve image path from car entity (assuming it exists)
-//            String imagePath = car.getImageName();
-//            String projectPath = new File(this.getClass().getProtectionDomain().getCodeSource().getLocation().toURI()).getParentFile().getParentFile().getAbsolutePath();
-//            File uploadDir = new File(projectPath + "/uploads");
-//
-//            // Attempt to delete image (robust error handling)
-//            if (imagePath != null && new File(uploadDir + "/" + imagePath).exists()) {
-//                if (!new File(uploadDir + "/" + imagePath).delete()) {
-//                    throw new IOException("Failed to delete image: " + imagePath);
-//
-//                }
-//            }
-//
-//            // Delete car entity
-//            carRepo.deleteById(id);
-//
-//            return "Car and image deleted successfully";
-//        }
-//        return "No Car Found";
-//    }
 
+    public Car updateCar(Integer id, CarDto carDto) throws IOException, URISyntaxException {
 
+        String projectPath = new File(this.getClass().getProtectionDomain().getCodeSource().getLocation().toURI()).getParentFile().getParentFile().getAbsolutePath();
+        File uploadDir = new File(projectPath + "/src/main/resources/static/uploads");
 
+        uploadDir.mkdir();
 
+        carDto.getImageName().transferTo(new File(uploadDir.getAbsolutePath() + "/" + carDto.getImageName().getOriginalFilename()));
 
-    public Car updateCar(Integer id, CarDetailsGetDto carDetailsGetDto){
+        Car car = dtoToEntity(carDto);
+        car.setImageName("uploads/" + carDto.getImageName().getOriginalFilename());
+
         if(carRepo.existsById(id)){
-            return carRepo.save(new Car(id,carDetailsGetDto.getBrand(),carDetailsGetDto.getModel(),carDetailsGetDto.getYear(),carDetailsGetDto.getEngineCap(),carDetailsGetDto.getFuelType(),carDetailsGetDto.getImageName()));
-
+            Car save = carRepo.save(car);
+            return save;
         }
         return null;
-    }
 
+    }
 
 
 
@@ -131,9 +106,6 @@ public class CarService {
         return modelMapperConfig.modelMapper().map(car,CarDetailsGetDto.class);
     }
 
-//    private CarDto entityToDto2(Car car){
-//        return modelMapperConfig.modelMapper().map(car,CarDto.class);
-//    }
 
     private CarDetailsGetDto entityToDto2(Car car){
         return modelMapperConfig.modelMapper().map(car,CarDetailsGetDto.class);

@@ -49,14 +49,6 @@ public class AdminController {
 
             Map<String, String> response = new HashMap<>();
             String adminByUserNameGetPw = adminRepo.findAdminByCredentials(adminDto.getUserName());
-//        String use = adminByUserNameGetPw.getPassword();
-
-
-//        if(bCryptPasswordEncoder.matches(adminDto.getPassword(),adminByUserNameGetPw)){
-//            System.out.println("hi");
-//        }
-
-//        Admin adminByUserNameAndPassword = adminRepo.findAdminByUserNameAndPassword(adminDto.getUserName(), adminDto.getPassword());
 
             Admin adminByUserName = adminRepo.findAdminByUserName(adminDto.getUserName());
 

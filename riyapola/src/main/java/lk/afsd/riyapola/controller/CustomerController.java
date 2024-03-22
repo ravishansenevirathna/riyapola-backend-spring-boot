@@ -7,6 +7,7 @@ import lk.afsd.riyapola.service.CustomerService;
 import lk.afsd.riyapola.util.JWTTokenGenerator;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -38,22 +39,32 @@ public class CustomerController {
 
     @PostMapping("/register")
     public ResponseEntity<CustomerDto> registerCustomer(@RequestBody CustomerDto customerDto){
+        BCryptPasswordEncoder bCryptPasswordEncoder=new BCryptPasswordEncoder();
+        String encryptPwd = bCryptPasswordEncoder.encode(customerDto.getPassword());
+        customerDto.setPassword(encryptPwd);
+
         CustomerDto customerDto1 = customerService.registerCustomer(customerDto);
         return new ResponseEntity<>(customerDto1, HttpStatus.CREATED);
     }
 
     @PostMapping("/login")
-    public Map<String, String> loginCustomer(@RequestBody Customer customer) {
-        Map<String, String> response = new HashMap<>();
-        Customer userByEmailAndPassword= customerRepo.findCustomersByEmailAndPassword(customer.getEmail(),customer.getPassword());
+    public ResponseEntity<Map<String,String>> loginCustomer(@RequestBody CustomerDto customerDto) {
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
-        if (userByEmailAndPassword != null) {
-            String token = this.jwtTokenGenerator.generateJwtToken(userByEmailAndPassword);
+
+        Map<String, String> response = new HashMap<>();
+        String customerByEmailtoGetPw = customerRepo.findCustomerByEmailToGetPw(customerDto.getEmail());
+        Customer customersByEmail= customerRepo.findCustomersByEmail(customerDto.getEmail());
+
+        if (customersByEmail != null && bCryptPasswordEncoder.matches(customerDto.getPassword(),customerByEmailtoGetPw)) {
+            String token = this.jwtTokenGenerator.generateJwtToken(customersByEmail);
             response.put("token", token);
+            return new ResponseEntity<>(response,HttpStatus.OK);
         } else {
             response.put("massage", "wrong Credentials");
+            return new ResponseEntity<>(response,HttpStatus.FORBIDDEN);
         }
-        return response;
+
     }
 
     @GetMapping("/getAllCustomer")
@@ -76,7 +87,6 @@ public class CustomerController {
     }
 
 //    Controller eken service ekt entity ekak pass karanna baha
-    
 //    put meka aye karanna update wechcha cus ge details pennanna puluwaqn wena widihata
 
     @PutMapping("updateCustomer/{cusId}")

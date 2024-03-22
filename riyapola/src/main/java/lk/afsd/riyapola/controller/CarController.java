@@ -34,11 +34,6 @@ public class CarController {
         this.jwtTokenGenerator = jwtTokenGenerator;
     }
 
-//    @PostMapping("addCar")
-//    public ResponseEntity<Car> saveCar(@RequestBody CarDto carDto){
-//        Car car=carService.saveCar(carDto);
-//        return new ResponseEntity<>(car, HttpStatus.CREATED);
-//    }
 
     @PostMapping("/addNewCar")
     public ResponseEntity<Object> saveCar(@RequestHeader(name = "Authorization") String authorizationHeader,@ModelAttribute CarDto carDto) throws IOException, URISyntaxException {
@@ -51,11 +46,6 @@ public class CarController {
         }
     }
 
-//    @GetMapping("/getAllCars")
-//    public ResponseEntity<Object> getAllCars(){
-//        List<CarDto> carDto = carService.getAllCars();
-//        return new ResponseEntity<>(carDto, HttpStatus.OK);
-//    }
 
     @GetMapping("/getAllCars")
     public ResponseEntity<Object> getAllCars(){
@@ -77,9 +67,11 @@ public class CarController {
     }
 
     @PutMapping("/updateCar/{carId}")
-    public ResponseEntity<Car> updateCar(@RequestHeader(name = "Authorization") String authorizationHeader,@PathVariable Integer carId, @ModelAttribute CarDetailsGetDto carDetailsGetDto){
+    public ResponseEntity<Car> updateCar(@RequestHeader(name = "Authorization") String authorizationHeader,@PathVariable Integer carId, @ModelAttribute CarDto carDto) throws IOException, URISyntaxException {
         if (this.jwtTokenGenerator.validateJwtToken(authorizationHeader)) {
-        Car car=carService.updateCar(carId,carDetailsGetDto);
+            System.out.println("working");
+            Car car=carService.updateCar(carId,carDto);
+            System.out.println("hi");
         return new ResponseEntity<>(car,HttpStatus.OK);}
         else {
             return null;
