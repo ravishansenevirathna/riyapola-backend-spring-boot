@@ -67,14 +67,15 @@ public class CarController {
     }
 
     @PutMapping("/updateCar/{carId}")
-    public ResponseEntity<Car> updateCar(@RequestHeader(name = "Authorization") String authorizationHeader,@PathVariable Integer carId, @ModelAttribute CarDto carDto) throws IOException, URISyntaxException {
+    public ResponseEntity<Object> updateCar(@RequestHeader(name = "Authorization") String authorizationHeader,@PathVariable Integer carId, @ModelAttribute CarDto carDto) throws IOException, URISyntaxException {
+        System.out.println("hi");
         if (this.jwtTokenGenerator.validateJwtToken(authorizationHeader)) {
             System.out.println("working");
             Car car=carService.updateCar(carId,carDto);
             System.out.println("hi");
         return new ResponseEntity<>(car,HttpStatus.OK);}
         else {
-            return null;
+            return new ResponseEntity<>("invalid Token", HttpStatus.FORBIDDEN);
         }
     }
 
