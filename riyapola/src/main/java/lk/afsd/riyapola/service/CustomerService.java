@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Hi 👋, I'm ravishansenevirathna
@@ -66,6 +67,13 @@ public class CustomerService {
         return null;
     }
 
+    public CustomerDto searchCustomer(Integer cusId) {
+
+        Customer customer = customerRepo.findCustomersByCusId(cusId);
+        return entityToDto(customer);
+
+    }
+
 
 
 
@@ -76,6 +84,7 @@ public class CustomerService {
     private CustomerDto entityToDto(Customer customer){
         return modelMapperConfig.modelMapper().map(customer,CustomerDto.class);
     }
+
 
 
 }

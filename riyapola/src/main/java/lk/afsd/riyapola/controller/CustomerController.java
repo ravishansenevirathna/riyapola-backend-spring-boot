@@ -59,6 +59,7 @@ public class CustomerController {
         if (customersByEmail != null && bCryptPasswordEncoder.matches(customerDto.getPassword(),customerByEmailtoGetPw)) {
             String token = this.jwtTokenGenerator.generateJwtToken(customersByEmail);
             response.put("token", token);
+            response.put("customerId", String.valueOf(customersByEmail.getCusId()));
             return new ResponseEntity<>(response,HttpStatus.OK);
         } else {
             response.put("massage", "wrong Credentials");
@@ -100,6 +101,19 @@ public class CustomerController {
             return new ResponseEntity<>("invalid Token", HttpStatus.FORBIDDEN);
         }
     }
+
+    @GetMapping("/searchCustomer/{cusId}")
+    public ResponseEntity<Object> searchCustomer(@RequestHeader(name = "Authorization") String authorizationHeader,@PathVariable Integer cusId){
+        if (this.jwtTokenGenerator.validateJwtToken(authorizationHeader)) {
+            CustomerDto customerDto = customerService.searchCustomer(cusId);
+            return new ResponseEntity<>(customerDto,HttpStatus.OK);
+
+        }else {
+            return new ResponseEntity<>("invalid Token", HttpStatus.FORBIDDEN);
+        }
+    }
+
+
     
 
 }

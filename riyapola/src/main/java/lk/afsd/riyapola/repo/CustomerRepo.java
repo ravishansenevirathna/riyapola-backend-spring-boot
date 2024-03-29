@@ -15,6 +15,8 @@ public interface CustomerRepo extends JpaRepository<Customer,Integer> {
 
     Customer findCustomersByEmail(String email);
 
+    Customer findCustomersByCusId(Integer cusId);
+
 
     @Query(nativeQuery = true,value = "SELECT password FROM customer WHERE email = :email")
     String findCustomerByEmailToGetPw(String email);
