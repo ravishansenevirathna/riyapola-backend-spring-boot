@@ -63,6 +63,7 @@ public class CustomerService {
             customerDto.setCusId(cusId);
              Customer customer = dtoToEntity(customerDto);
              customerRepo.save(customer);
+             return entityToDto(customer);
         }
         return null;
     }

@@ -88,14 +88,16 @@ public class CustomerController {
     }
 
 //    Controller eken service ekt entity ekak pass karanna baha
-//    put meka aye karanna update wechcha cus ge details pennanna puluwaqn wena widihata
 
-    @PutMapping("updateCustomer/{cusId}")
+    @PutMapping("/updateCustomer/{cusId}")
     public ResponseEntity<Object> updateCustomer(@RequestHeader(name = "Authorization") String authorizationHeader,@PathVariable Integer cusId, @RequestBody CustomerDto customerDto){
+        BCryptPasswordEncoder bCryptPasswordEncoder=new BCryptPasswordEncoder();
         if (this.jwtTokenGenerator.validateJwtToken(authorizationHeader)) {
+            String encryptPwd = bCryptPasswordEncoder.encode(customerDto.getPassword());
+            customerDto.setPassword(encryptPwd);
 
-        CustomerDto customerDto1=customerService.updateCustomer(cusId,customerDto);
-        return new ResponseEntity("done",HttpStatus.OK);
+            CustomerDto customerDto1=customerService.updateCustomer(cusId,customerDto);
+            return new ResponseEntity<>(customerDto1,HttpStatus.OK);
 
         } else {
             return new ResponseEntity<>("invalid Token", HttpStatus.FORBIDDEN);
