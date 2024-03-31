@@ -75,7 +75,7 @@ public class CustomerController {
     }
 
 
-    @DeleteMapping("/{cusId}")
+    @DeleteMapping("/deleteCustomer/{cusId}")
     public ResponseEntity<String> deleteCustomer(@RequestHeader(name = "Authorization") String authorizationHeader,@PathVariable Integer cusId){
 
         if (this.jwtTokenGenerator.validateJwtToken(authorizationHeader)) {
