@@ -1,6 +1,5 @@
 package lk.afsd.riyapola.controller;
 
-import lk.afsd.riyapola.dto.CarDetailsGetDto;
 import lk.afsd.riyapola.dto.CarDto;
 import lk.afsd.riyapola.entity.Car;
 import lk.afsd.riyapola.service.CarService;
@@ -36,10 +35,10 @@ public class CarController {
 
 
     @PostMapping("/addNewCar")
-    public ResponseEntity<Object> saveCar(@RequestHeader(name = "Authorization") String authorizationHeader,@ModelAttribute CarDto carDto) throws IOException, URISyntaxException {
+    public ResponseEntity<Object> saveCar(@RequestHeader(name = "Authorization") String authorizationHeader,@RequestBody CarDto carDto){
         if (this.jwtTokenGenerator.validateJwtToken(authorizationHeader)) {
-            CarDetailsGetDto carDetailsGetDto = carService.saveCar(carDto);
-            return new ResponseEntity<>(carDetailsGetDto, HttpStatus.CREATED);
+            CarDto carDto1 = carService.saveCar(carDto);
+            return new ResponseEntity<>(carDto1, HttpStatus.CREATED);
         }
         else {
             return new ResponseEntity<>("invalid Token", HttpStatus.FORBIDDEN);
@@ -49,9 +48,11 @@ public class CarController {
 
     @GetMapping("/getAllCars")
     public ResponseEntity<Object> getAllCars(){
-        List<CarDetailsGetDto> GetDto = carService.getAllCars();
+        List<CarDto> GetDto = carService.getAllCars();
         return new ResponseEntity<>(GetDto, HttpStatus.OK);
     }
+
+
 
 
 
@@ -66,14 +67,14 @@ public class CarController {
 
     }
 
+
+
     @PutMapping("/updateCar/{carId}")
-    public ResponseEntity<Object> updateCar(@RequestHeader(name = "Authorization") String authorizationHeader,@PathVariable Integer carId, @ModelAttribute CarDto carDto) throws IOException, URISyntaxException {
-        System.out.println("hi");
+    public ResponseEntity<Object> updateCar(@RequestHeader(name = "Authorization") String authorizationHeader,@PathVariable Integer carId, @RequestBody CarDto carDto){
         if (this.jwtTokenGenerator.validateJwtToken(authorizationHeader)) {
-            System.out.println("working");
-            Car car=carService.updateCar(carId,carDto);
-            System.out.println("hi");
-        return new ResponseEntity<>(car,HttpStatus.OK);}
+            CarDto carDto1=carService.updateCar(carId,carDto);
+
+        return new ResponseEntity<>(carDto1,HttpStatus.OK);}
         else {
             return new ResponseEntity<>("invalid Token", HttpStatus.FORBIDDEN);
         }

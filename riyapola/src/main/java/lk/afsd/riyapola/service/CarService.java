@@ -1,6 +1,5 @@
 package lk.afsd.riyapola.service;
 
-import lk.afsd.riyapola.dto.CarDetailsGetDto;
 import lk.afsd.riyapola.dto.CarDto;
 import lk.afsd.riyapola.entity.Car;
 import lk.afsd.riyapola.repo.CarRepo;
@@ -32,31 +31,21 @@ public class CarService {
         this.modelMapperConfig = modelMapperConfig;
     }
 
-    public CarDetailsGetDto saveCar(CarDto carDto) throws IOException, URISyntaxException {
-        String projectPath = new File(this.getClass().getProtectionDomain().getCodeSource().getLocation().toURI()).getParentFile().getParentFile().getAbsolutePath();
-        File uploadDir = new File(projectPath + "/src/main/resources/static/uploads");
+    public CarDto saveCar(CarDto carDto){
 
-        uploadDir.mkdir();
-
-        carDto.getImageName().transferTo(new File(uploadDir.getAbsolutePath() + "/" + carDto.getImageName().getOriginalFilename()));
 
         Car car = dtoToEntity(carDto);
-        car.setImageName("uploads/" + carDto.getImageName().getOriginalFilename());
-
         Car save = carRepo.save(car);
         return entityToDto(save);
 
     }
 
-
-
-
-    public List<CarDetailsGetDto> getAllCars(){
+    public List<CarDto> getAllCars(){
         List<Car> all = carRepo.findAll();
-        List<CarDetailsGetDto> list = new ArrayList<>();
+        List<CarDto> list = new ArrayList<>();
         for (Car car : all) {
-            CarDetailsGetDto carDetailsGetDto = entityToDto2(car);
-            list.add(carDetailsGetDto);
+            CarDto carDto = entityToDto2(car);
+            list.add(carDto);
         }
         return list;
     }
@@ -75,23 +64,23 @@ public class CarService {
 
 
 
-    public Car updateCar(Integer id, CarDto carDto) throws IOException, URISyntaxException {
+    public CarDto updateCar(Integer id, CarDto carDto){
 
-        String projectPath = new File(this.getClass().getProtectionDomain().getCodeSource().getLocation().toURI()).getParentFile().getParentFile().getAbsolutePath();
-        File uploadDir = new File(projectPath + "/src/main/resources/static/uploads");
-
-        uploadDir.mkdir();
-
-        carDto.getImageName().transferTo(new File(uploadDir.getAbsolutePath() + "/" + carDto.getImageName().getOriginalFilename()));
-
-        Car car = dtoToEntity(carDto);
-        car.setImageName("uploads/" + carDto.getImageName().getOriginalFilename());
-
-        if(carRepo.existsById(id)){
-            Car save = carRepo.save(car);
-            return save;
+        Car existingCar = carRepo.findById(id).orElse(null);
+        if(existingCar == null){
+            return null;
         }
-        return null;
+
+        existingCar.setBrand(carDto.getBrand());
+        existingCar.setModel(carDto.getModel());
+        existingCar.setYear(carDto.getYear());
+        existingCar.setFuelType(carDto.getFuelType());
+        existingCar.setEngineCap(carDto.getEngineCap());
+
+
+        Car savedCar = carRepo.save(existingCar);
+
+        return entityToDto(savedCar);
 
     }
 
@@ -102,13 +91,13 @@ public class CarService {
         return modelMapperConfig.modelMapper().map(carDto, Car.class);
     }
 
-    private CarDetailsGetDto entityToDto(Car car){
-        return modelMapperConfig.modelMapper().map(car,CarDetailsGetDto.class);
+    private CarDto entityToDto(Car car){
+        return modelMapperConfig.modelMapper().map(car,CarDto.class);
     }
 
 
-    private CarDetailsGetDto entityToDto2(Car car){
-        return modelMapperConfig.modelMapper().map(car,CarDetailsGetDto.class);
+    private CarDto entityToDto2(Car car){
+        return modelMapperConfig.modelMapper().map(car,CarDto.class);
     }
 
 

@@ -23,6 +23,6 @@ public class CarDetailsGetDto {
     private int year;
     private String engineCap;
     private String fuelType;
-    private String imageName;
+
 }
 

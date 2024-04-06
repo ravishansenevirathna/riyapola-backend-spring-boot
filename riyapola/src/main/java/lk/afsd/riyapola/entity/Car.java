@@ -29,6 +29,8 @@ public class Car {
     private int year;
     private String engineCap;
     private String fuelType;
-    private String imageName;
+
+    @OneToMany(mappedBy = "car",cascade = CascadeType.ALL)
+    List<Images> images;
 
 }
