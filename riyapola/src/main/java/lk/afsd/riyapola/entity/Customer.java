@@ -27,6 +27,9 @@ public class Customer {
     private String email;
     private String password;
 
+    @OneToMany(mappedBy = "customer",cascade = CascadeType.ALL)
+    List<Reservations> reservations;
+
 
 
 }

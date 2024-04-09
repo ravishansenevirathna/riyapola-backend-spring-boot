@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -32,5 +31,10 @@ public class Car {
 
     @OneToMany(mappedBy = "car",cascade = CascadeType.ALL)
     List<Images> images;
+
+    @OneToMany(mappedBy = "car",cascade = CascadeType.ALL)
+    List<Reservations> reservations;
+
+
 
 }
