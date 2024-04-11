@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.lang.model.element.Name;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,8 +27,14 @@ public class Customer {
     private String email;
     private String password;
 
-    @OneToMany(mappedBy = "customer",cascade = CascadeType.ALL)
-    List<Reservations> reservations;
+
+    @OneToMany(
+            cascade = CascadeType.ALL
+    )
+    @JoinColumn(name = "customerId")
+    List<Reservation> reservation = new ArrayList<>();
+
+
 
 
 

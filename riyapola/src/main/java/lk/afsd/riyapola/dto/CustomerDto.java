@@ -1,8 +1,11 @@
 package lk.afsd.riyapola.dto;
 
+import lk.afsd.riyapola.entity.Reservation;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 /**
  * Hi 👋, I'm ravishansenevirathna
@@ -19,4 +22,5 @@ public class CustomerDto{
     private String telephoneNum;
     private String email;
     private String password;
+    private List<Reservation> reservation;
 }

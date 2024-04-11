@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,8 +33,11 @@ public class Car {
     @OneToMany(mappedBy = "car",cascade = CascadeType.ALL)
     List<Images> images;
 
-    @OneToMany(mappedBy = "car",cascade = CascadeType.ALL)
-    List<Reservations> reservations;
+    @OneToMany(
+            cascade = CascadeType.ALL
+    )
+    @JoinColumn(name = "carId")
+    List<Reservation> reservation = new ArrayList<>();
 
 
 
