@@ -24,6 +24,6 @@ public class CarDto {
     private String engineCap;
     private String fuelType;
     private List<ImageDetailsGetDto> images;
-    private List<Reservation> reservation;
+//    private List<Reservation> reservation;
 
 }

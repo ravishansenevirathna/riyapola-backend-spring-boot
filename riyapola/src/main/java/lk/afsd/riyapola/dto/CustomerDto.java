@@ -22,5 +22,5 @@ public class CustomerDto{
     private String telephoneNum;
     private String email;
     private String password;
-    private List<Reservation> reservation;
+//    private List<Reservation> reservation;
 }

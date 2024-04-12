@@ -1,11 +1,14 @@
 package lk.afsd.riyapola.controller;
 import lk.afsd.riyapola.dto.CarDto;
+import lk.afsd.riyapola.dto.MailDetailsDto;
 import lk.afsd.riyapola.dto.ReservationDto;
 import lk.afsd.riyapola.service.ReservationService;
 import lk.afsd.riyapola.util.JWTTokenGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,10 +25,14 @@ import java.util.List;
 @RequestMapping("/reservation")
 public class ReservationController {
 
+    private final JavaMailSender javaMailSender;
+
     private final JWTTokenGenerator jwtTokenGenerator;
     private final ReservationService reservationService;
+
     @Autowired
-    public ReservationController(JWTTokenGenerator jwtTokenGenerator, ReservationService reservationService) {
+    public ReservationController(JavaMailSender javaMailSender, JWTTokenGenerator jwtTokenGenerator, ReservationService reservationService) {
+        this.javaMailSender = javaMailSender;
         this.jwtTokenGenerator = jwtTokenGenerator;
         this.reservationService = reservationService;
     }
@@ -51,23 +58,28 @@ public class ReservationController {
     }
 
 
-//    @PostMapping("/send/mail")
-//    public String sendEmail(@RequestBody MailDetailsDto mailDetailsDto){
-//
-//        try {
-//            SimpleMailMessage message=new SimpleMailMessage();
-//            message.setSubject(mailDetailsDto.getSubject());
-//            message.setTo(mailDetailsDto.getToMail());
-//            message.setFrom("tharindurandika633@gmail.com");
-//            message.setText(mailDetailsDto.getMessage());
-//
-//            javaMailSender.send(message);
-//
-//            return "Success";
-//        }catch(Exception e){
-//            return e.getMessage();
-//        }
-//
-//
-//    }
+
+
+
+
+
+    @PostMapping("/send/mail")
+    public String sendEmail(@RequestBody MailDetailsDto mailDetailsDto){
+
+        try {
+            SimpleMailMessage message=new SimpleMailMessage();
+            message.setSubject(mailDetailsDto.getSubject());
+            message.setTo(mailDetailsDto.getToMail());
+            message.setFrom("tharindurandika633@gmail.com");
+            message.setText(mailDetailsDto.getMessage());
+
+            javaMailSender.send(message);
+
+            return "Success";
+        }catch(Exception e){
+            return e.getMessage();
+        }
+
+
+    }
 }
