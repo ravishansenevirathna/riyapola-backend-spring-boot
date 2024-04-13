@@ -51,6 +51,22 @@ public class ReservationService {
 
 
 
+    public ReservationDto updateReservation(Integer reservationId, ReservationDto reservationDto){
+
+        Reservation existingReservation = reservationRepo.findById(reservationId).orElse(null);
+        if(existingReservation == null){
+            return null;
+        }
+
+        existingReservation.setStatus(reservationDto.getStatus());
+
+        Reservation savedReservation = reservationRepo.save(existingReservation);
+
+        return entityToDto(savedReservation);
+    }
+
+
+
 
     private Reservation dtoToEntity(ReservationDto reservationDto){
         return modelMapperConfig.modelMapper().map(reservationDto, Reservation.class);

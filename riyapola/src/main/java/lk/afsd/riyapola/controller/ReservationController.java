@@ -11,6 +11,8 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.List;
 
 /**
@@ -81,5 +83,18 @@ public class ReservationController {
         }
 
 
+    }
+
+
+
+    @PutMapping("/updateReservation/{reservationId}")
+    public ResponseEntity<Object> updateReservation(@RequestHeader(name = "Authorization") String authorizationHeader,@PathVariable Integer reservationId, @RequestBody ReservationDto reservationDto){
+        if (this.jwtTokenGenerator.validateJwtToken(authorizationHeader)) {
+            ReservationDto reservationDto1=reservationService.updateReservation(reservationId,reservationDto);
+
+            return new ResponseEntity<>(reservationDto1,HttpStatus.OK);}
+        else {
+            return new ResponseEntity<>("invalid Token", HttpStatus.FORBIDDEN);
+        }
     }
 }
