@@ -87,8 +87,6 @@ public class CustomerController {
 
     }
 
-//    Controller eken service ekt entity ekak pass karanna baha
-
     @PutMapping("/updateCustomer/{cusId}")
     public ResponseEntity<Object> updateCustomer(@RequestHeader(name = "Authorization") String authorizationHeader,@PathVariable Integer cusId, @RequestBody CustomerDto customerDto){
         BCryptPasswordEncoder bCryptPasswordEncoder=new BCryptPasswordEncoder();

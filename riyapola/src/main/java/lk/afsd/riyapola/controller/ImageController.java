@@ -67,7 +67,7 @@ public class ImageController {
 
     @PutMapping("/updateCarImage/{imageId}")
     public ResponseEntity<Object> updateCarImage(@RequestHeader(name = "Authorization") String authorizationHeader,@PathVariable Integer imageId, @ModelAttribute ImageDto imageDto) throws IOException, URISyntaxException {
-        System.out.println("hi");
+
         if (this.jwtTokenGenerator.validateJwtToken(authorizationHeader)) {
 
             Images updatedImage =imageService.updateCarImage(imageId,imageDto);
