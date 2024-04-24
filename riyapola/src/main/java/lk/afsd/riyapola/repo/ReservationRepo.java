@@ -3,6 +3,8 @@ package lk.afsd.riyapola.repo;
 import lk.afsd.riyapola.entity.Reservation;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 /**
  * Hi 👋, I'm ravishansenevirathna
  * Project : riyapola
@@ -10,4 +12,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * Created time : 1:24 PM
  */
 public interface ReservationRepo extends JpaRepository<Reservation,Integer> {
+
+    List<Reservation> findReservationsByCustomerId(Integer cusId);
 }

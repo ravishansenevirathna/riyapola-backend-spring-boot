@@ -68,6 +68,25 @@ public class ReservationService {
 
 
 
+
+    public List<ReservationDto> searchReservation(Integer cusId){
+        List<Reservation> all = reservationRepo.findReservationsByCustomerId(cusId);
+        List<ReservationDto> list = new ArrayList<>();
+        for (Reservation reservation : all) {
+            ReservationDto reservationDto = entityToDto(reservation);
+            list.add(reservationDto);
+        }
+        return list;
+    }
+
+
+
+
+
+
+
+
+
     private Reservation dtoToEntity(ReservationDto reservationDto){
         return modelMapperConfig.modelMapper().map(reservationDto, Reservation.class);
     }

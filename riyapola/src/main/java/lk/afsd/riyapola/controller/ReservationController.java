@@ -2,6 +2,7 @@ package lk.afsd.riyapola.controller;
 import lk.afsd.riyapola.dto.CarDto;
 import lk.afsd.riyapola.dto.MailDetailsDto;
 import lk.afsd.riyapola.dto.ReservationDto;
+import lk.afsd.riyapola.entity.Reservation;
 import lk.afsd.riyapola.service.ReservationService;
 import lk.afsd.riyapola.util.JWTTokenGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -97,4 +98,15 @@ public class ReservationController {
             return new ResponseEntity<>("invalid Token", HttpStatus.FORBIDDEN);
         }
     }
+
+
+
+    @GetMapping("searchReservation/{cusId}")
+    public ResponseEntity<Object> searchReservation(@PathVariable Integer cusId){
+        List<ReservationDto> reservation=reservationService.searchReservation(cusId);
+        return new ResponseEntity<>(reservation,HttpStatus.OK);
+    }
+
+
+
 }
