@@ -57,7 +57,9 @@ public class ReservationService {
         if(existingReservation == null){
             return null;
         }
-
+//if(reservationDto.getStatus()=="approved"){
+//
+//}
         existingReservation.setStatus(reservationDto.getStatus());
 
         Reservation savedReservation = reservationRepo.save(existingReservation);
