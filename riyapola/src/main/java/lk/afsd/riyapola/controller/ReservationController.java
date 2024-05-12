@@ -102,9 +102,15 @@ public class ReservationController {
 
 
     @GetMapping("searchReservation/{cusId}")
-    public ResponseEntity<Object> searchReservation(@PathVariable Integer cusId){
+    public ResponseEntity<Object> searchReservation(@RequestHeader(name = "Authorization") String authorizationHeader,@PathVariable Integer cusId){
+        if (this.jwtTokenGenerator.validateJwtToken(authorizationHeader)) {
         List<ReservationDto> reservation=reservationService.searchReservation(cusId);
-        return new ResponseEntity<>(reservation,HttpStatus.OK);
+
+        return new ResponseEntity<>(reservation,HttpStatus.OK);}
+
+         else {
+                return new ResponseEntity<>("invalid Token", HttpStatus.FORBIDDEN);
+            }
     }
 
 
