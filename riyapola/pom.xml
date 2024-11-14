@@ -11,7 +11,7 @@
 	<groupId>lk.afsd</groupId>
 	<artifactId>riyapola</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<name>riyapola</name>
 	<description>Demo project for Spring Boot for afsd</description>
 	<properties>
